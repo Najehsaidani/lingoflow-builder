@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageCard } from "@/components/LanguageCard";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Star, Users, BookOpen, Play, ArrowRight } from "lucide-react";
+import { Globe, Star, Users, BookOpen, Play, ArrowRight, LogIn, UserPlus } from "lucide-react";
 import heroImage from "@/assets/hero-learning.jpg";
 import spanishImage from "@/assets/spanish-flag.jpg";
 import frenchImage from "@/assets/french-flag.jpg";
@@ -37,6 +38,35 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="relative z-50 bg-background/80 backdrop-blur-sm border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">L</span>
+              </div>
+              <span className="text-xl font-bold text-foreground">LingoFlow</span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Link to="/login">
+                <Button variant="ghost" size="sm">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button size="sm">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
@@ -62,13 +92,15 @@ const Index = () => {
               </div>
 
               <div className="flex items-center gap-6">
-                <Button 
-                  size="lg" 
-                  className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 shadow-strong"
-                >
-                  Get Started Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <Link to="/signup">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 shadow-strong"
+                  >
+                    Get Started Free
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
                 
                 <div className="flex items-center gap-4 text-white/80">
                   <div className="flex items-center gap-1">
@@ -184,14 +216,15 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6"
-              onClick={() => setShowDashboard(true)}
-            >
-              Start Learning Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/signup">
+              <Button 
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6"
+              >
+                Start Learning Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
             <Button 
               size="lg" 
               variant="outline" 
