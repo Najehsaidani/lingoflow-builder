@@ -1,7 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Users, BookOpen } from "lucide-react";
+import { PlayfulButton } from "@/components/PlayfulButton";
+import { Users, BookOpen, Play, Sparkles } from "lucide-react";
 
 interface LanguageCardProps {
   language: string;
@@ -13,64 +15,68 @@ interface LanguageCardProps {
   onStart: () => void;
 }
 
-export const LanguageCard = ({ 
-  language, 
-  nativeLanguage, 
-  difficulty, 
-  learners, 
-  lessons, 
-  image,
-  onStart 
-}: LanguageCardProps) => {
+export const LanguageCard = ({ language, nativeLanguage, difficulty, learners, lessons, image, onStart }: LanguageCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <Card className="group hover:shadow-medium transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
-          <div className="relative">
-            <img 
-              src={image} 
-              alt={`${language} course`}
-              className="w-16 h-16 rounded-lg object-cover shadow-soft"
-            />
-            <div className="absolute -top-2 -right-2 bg-gradient-accent text-white text-xs px-2 py-1 rounded-full font-medium">
-              {difficulty}
-            </div>
+    <Card 
+      className="overflow-hidden transition-all duration-300 hover-lift cursor-pointer group bg-gradient-to-br from-white to-gray-50/50 border-2 border-gray-100 hover:border-primary/20 shadow-soft rounded-3xl"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onStart}
+    >
+      <div className="relative h-52 overflow-hidden">
+        <img 
+          src={image} 
+          alt={`${language} course`}
+          className={`w-full h-full object-cover transition-transform duration-500 ${
+            isHovered ? 'scale-110' : 'scale-100'
+          }`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <Badge 
+          variant="secondary" 
+          className="absolute top-4 right-4 bg-white/95 text-primary font-bold border border-primary/20 rounded-full px-3 py-1"
+        >
+          <Sparkles className="h-3 w-3 mr-1" />
+          {difficulty}
+        </Badge>
+        
+        {/* Floating elements for playfulness */}
+        <div className="absolute top-6 left-6 w-3 h-3 bg-accent rounded-full animate-float opacity-80" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-10 left-10 w-2 h-2 bg-secondary rounded-full animate-float opacity-60" style={{ animationDelay: '1s' }} />
+      </div>
+      
+      <CardHeader className="pb-3 pt-6">
+        <CardTitle className="text-2xl font-bold font-fredoka text-gray-800">
+          Learn {language}
+        </CardTitle>
+        <p className="text-base text-muted-foreground font-medium">
+          From {nativeLanguage}
+        </p>
+      </CardHeader>
+      
+      <CardContent className="space-y-5 pb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-2">
+            <Users className="h-4 w-4 text-secondary" />
+            <span className="text-sm font-semibold text-gray-700">{learners}</span>
           </div>
-          
-          <div className="flex-1 space-y-3">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                {language}
-              </h3>
-              <p className="text-sm text-muted-foreground">for {nativeLanguage} speakers</p>
-            </div>
-            
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Users className="h-4 w-4" />
-                {learners}
-              </div>
-              <div className="flex items-center gap-1">
-                <BookOpen className="h-4 w-4" />
-                {lessons} lessons
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <Badge variant="secondary" className="bg-secondary-soft text-secondary font-medium">
-                <Trophy className="h-3 w-3 mr-1" />
-                Popular
-              </Badge>
-              
-              <Button 
-                onClick={onStart}
-                className="bg-gradient-primary hover:shadow-glow transition-all duration-300"
-              >
-                Start Course
-              </Button>
-            </div>
+          <div className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-2">
+            <BookOpen className="h-4 w-4 text-accent" />
+            <span className="text-sm font-semibold text-gray-700">{lessons} lessons</span>
           </div>
         </div>
+        
+        <PlayfulButton 
+          variant="primary"
+          size="lg"
+          icon={Play}
+          className="w-full font-fredoka text-lg"
+          onClick={() => onStart()}
+        >
+          Start Course
+        </PlayfulButton>
       </CardContent>
     </Card>
   );

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { GameStats } from "@/components/GameStats";
 import { ProgressRing } from "@/components/ProgressRing";
 import { LessonPlayer } from "@/components/LessonPlayer";
+import { PlayfulButton } from "@/components/PlayfulButton";
 import { 
   BookOpen, 
   Play, 
@@ -100,16 +101,16 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/3 to-secondary/3">
       {/* Header */}
-      <header className="bg-card shadow-soft border-b">
+      <header className="bg-white/80 backdrop-blur-md shadow-soft border-b-2 border-primary/10">
         <div className="max-w-6xl mx-auto p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+              <h1 className="text-3xl font-fredoka font-bold bg-gradient-primary bg-clip-text text-transparent">
                 LingoFlow
               </h1>
-              <p className="text-muted-foreground">Continue your Spanish journey</p>
+              <p className="text-muted-foreground font-medium">Continue your Spanish journey</p>
             </div>
             <GameStats {...userStats} />
           </div>
@@ -121,23 +122,25 @@ export const Dashboard = () => {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Daily Challenge */}
-            <Card className="bg-gradient-hero text-white shadow-strong">
-              <CardContent className="p-6">
+            <Card className="bg-gradient-hero text-white shadow-strong rounded-3xl overflow-hidden relative">
+              <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full animate-float" style={{ animationDelay: '0.5s' }} />
+              <div className="absolute bottom-6 left-6 w-4 h-4 bg-white/30 rounded-full animate-float" style={{ animationDelay: '1.5s' }} />
+              <CardContent className="p-8">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Daily Challenge</h3>
-                    <p className="opacity-90">Complete 3 lessons to earn bonus XP!</p>
+                    <h3 className="text-2xl font-fredoka font-bold mb-3">Daily Challenge</h3>
+                    <p className="opacity-90 text-lg">Complete 3 lessons to earn bonus XP!</p>
                   </div>
                   <div className="text-center">
                     <ProgressRing 
                       progress={66} 
-                      size={80} 
+                      size={90} 
                       color="white"
                       backgroundColor="rgba(255,255,255,0.2)"
                     >
                       <div className="text-center">
-                        <div className="font-bold">2/3</div>
-                        <div className="text-xs opacity-80">lessons</div>
+                        <div className="font-bold text-xl">2/3</div>
+                        <div className="text-sm opacity-80">lessons</div>
                       </div>
                     </ProgressRing>
                   </div>
@@ -146,80 +149,85 @@ export const Dashboard = () => {
             </Card>
 
             {/* Units */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Your Learning Path</h2>
+            <div className="space-y-6">
+              <h2 className="text-2xl font-fredoka font-bold text-gray-800">Your Learning Path</h2>
               
               {units.map((unit, index) => (
                 <Card 
                   key={unit.id}
-                  className={`transition-all duration-300 hover:shadow-medium ${
-                    !unit.isUnlocked ? 'opacity-60' : 'hover:-translate-y-1'
+                  className={`transition-all duration-300 hover-lift rounded-3xl border-2 bg-white/90 backdrop-blur-sm ${
+                    !unit.isUnlocked ? 'opacity-60' : 'border-gray-100 hover:border-primary/20 shadow-medium hover:shadow-strong'
                   }`}
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-6">
                       {/* Unit Number */}
-                      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold ${
+                      <div className={`w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold relative ${
                         unit.progress === 100 
-                          ? 'bg-gradient-success text-white' 
+                          ? 'bg-gradient-success text-white shadow-medium' 
                           : unit.isUnlocked 
-                            ? 'bg-gradient-primary text-white'
+                            ? 'bg-gradient-primary text-white shadow-medium'
                             : 'bg-muted text-muted-foreground'
                       }`}>
                         {unit.progress === 100 ? (
-                          <CheckCircle2 className="h-8 w-8" />
+                          <CheckCircle2 className="h-10 w-10 animate-bounce-in" />
                         ) : unit.isUnlocked ? (
-                          unit.id
+                          <span className="font-fredoka">{unit.id}</span>
                         ) : (
-                          <Lock className="h-6 w-6" />
+                          <Lock className="h-8 w-8" />
+                        )}
+                        {unit.isUnlocked && (
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-accent rounded-full animate-float" style={{ animationDelay: `${index * 0.5}s` }} />
                         )}
                       </div>
 
                       {/* Unit Info */}
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-lg">{unit.title}</h3>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-fredoka font-bold text-2xl text-gray-800">{unit.title}</h3>
                           {unit.progress === 100 && (
-                            <Badge className="bg-gradient-success">
-                              <Trophy className="h-3 w-3 mr-1" />
+                            <Badge className="bg-gradient-success border-0 text-white font-bold animate-pulse-glow">
+                              <Trophy className="h-4 w-4 mr-1" />
                               Completed
                             </Badge>
                           )}
                         </div>
-                        <p className="text-muted-foreground text-sm mb-3">{unit.description}</p>
+                        <p className="text-muted-foreground text-base mb-4 font-medium">{unit.description}</p>
                         
-                        <div className="flex items-center gap-4 text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
+                        <div className="flex items-center gap-6 text-base">
+                          <div className="flex items-center gap-2 bg-secondary/10 text-secondary rounded-full px-3 py-1">
                             <BookOpen className="h-4 w-4" />
-                            {unit.completedLessons}/{unit.lessons} lessons
+                            <span className="font-semibold">{unit.completedLessons}/{unit.lessons} lessons</span>
                           </div>
-                          <div className="flex items-center gap-1 text-accent">
+                          <div className="flex items-center gap-2 bg-accent/10 text-accent rounded-full px-3 py-1">
                             <Star className="h-4 w-4" />
-                            {unit.xpReward} XP
+                            <span className="font-semibold">{unit.xpReward} XP</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Progress & Action */}
-                      <div className="text-right space-y-3">
+                      <div className="text-right space-y-4">
                         <ProgressRing 
                           progress={unit.progress} 
-                          size={60}
+                          size={70}
                           color={unit.progress === 100 ? "hsl(var(--secondary))" : "hsl(var(--primary))"}
                         >
-                          <span className="text-sm font-semibold">
+                          <span className="text-base font-bold">
                             {unit.progress}%
                           </span>
                         </ProgressRing>
                         
-                        <Button 
+                        <PlayfulButton 
+                          variant={unit.progress === 100 ? "secondary" : "primary"}
+                          size="lg"
                           disabled={!unit.isUnlocked}
+                          icon={Play}
                           onClick={() => unit.isUnlocked && setShowLesson(true)}
-                          className="bg-gradient-primary"
+                          className="font-fredoka"
                         >
                           {unit.progress === 100 ? 'Review' : 'Continue'}
-                          <Play className="ml-2 h-4 w-4" />
-                        </Button>
+                        </PlayfulButton>
                       </div>
                     </div>
                   </CardContent>
@@ -231,22 +239,22 @@ export const Dashboard = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Achievement */}
-            <Card className="shadow-medium">
+            <Card className="shadow-medium rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-gray-100">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-accent" />
+                <CardTitle className="flex items-center gap-2 font-fredoka text-lg">
+                  <Trophy className="h-6 w-6 text-accent animate-wiggle" />
                   Recent Achievement
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-center space-y-3">
+              <CardContent className="text-center space-y-4">
                 <img 
                   src={achievementImage} 
                   alt="Achievement" 
-                  className="w-16 h-16 mx-auto rounded-lg"
+                  className="w-20 h-20 mx-auto rounded-xl shadow-medium hover-grow"
                 />
                 <div>
-                  <h4 className="font-semibold">Week Warrior</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <h4 className="font-fredoka font-bold text-lg text-gray-800">Week Warrior</h4>
+                  <p className="text-muted-foreground font-medium">
                     Completed 7 days in a row!
                   </p>
                 </div>
@@ -254,35 +262,35 @@ export const Dashboard = () => {
             </Card>
 
             {/* Quick Stats */}
-            <Card>
+            <Card className="rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-gray-100">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 font-fredoka text-lg">
+                  <Target className="h-6 w-6 text-primary" />
                   This Week
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Lessons completed</span>
-                  <span className="font-semibold">12</span>
+                <div className="flex justify-between items-center p-2">
+                  <span className="text-muted-foreground font-medium">Lessons completed</span>
+                  <span className="font-bold text-lg">12</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">XP earned</span>
-                  <span className="font-semibold text-accent">450 XP</span>
+                <div className="flex justify-between items-center p-2">
+                  <span className="text-muted-foreground font-medium">XP earned</span>
+                  <span className="font-bold text-lg text-accent">450 XP</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Time studied</span>
-                  <span className="font-semibold">2h 30m</span>
+                <div className="flex justify-between items-center p-2">
+                  <span className="text-muted-foreground font-medium">Time studied</span>
+                  <span className="font-bold text-lg">2h 30m</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Study Reminder */}
-            <Card className="bg-primary-soft border-primary/20">
-              <CardContent className="p-4 text-center">
-                <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-                <p className="text-sm font-medium">Don't break your streak!</p>
-                <p className="text-xs text-muted-foreground mt-1">
+            <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-2 border-primary/20 rounded-3xl">
+              <CardContent className="p-6 text-center">
+                <Clock className="h-10 w-10 text-primary mx-auto mb-3 animate-float" />
+                <p className="font-fredoka font-bold text-lg text-gray-800">Don't break your streak!</p>
+                <p className="text-muted-foreground font-medium mt-2">
                   Study for 5 minutes to keep your 7-day streak
                 </p>
               </CardContent>

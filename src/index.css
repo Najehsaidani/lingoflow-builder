@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LingoFlow Design System - Language Learning Theme */
+/* LingoFlow Design System - Playful Duolingo-inspired Theme */
 
 @layer base {
   :root {
-    /* Base colors */
-    --background: 245 50% 98%;
-    --foreground: 220 15% 15%;
+    /* Base colors - Light and airy like Duolingo */
+    --background: 195 100% 98%;
+    --foreground: 220 20% 20%;
 
     /* Card elements */
     --card: 0 0% 100%;
@@ -18,46 +18,47 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    /* Primary brand colors - Learning Blue */
-    --primary: 210 85% 58%;
+    /* Primary brand colors - Duolingo Green */
+    --primary: 140 85% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 210 85% 95%;
+    --primary-soft: 140 85% 94%;
 
-    /* Secondary colors - Success Green */
-    --secondary: 142 70% 50%;
+    /* Secondary colors - Learning Blue */
+    --secondary: 210 100% 56%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 142 70% 95%;
+    --secondary-soft: 210 100% 95%;
 
     /* Muted elements */
     --muted: 220 15% 96%;
     --muted-foreground: 220 10% 50%;
 
-    /* Accent colors - Achievement Orange */
-    --accent: 35 95% 60%;
+    /* Accent colors - Playful Orange */
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 35 95% 95%;
+    --accent-soft: 25 95% 94%;
 
-    /* Error states */
-    --destructive: 0 75% 60%;
+    /* Error states - Soft Red */
+    --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
-    --destructive-soft: 0 75% 95%;
+    --destructive-soft: 0 85% 94%;
 
     /* Borders and inputs */
     --border: 220 15% 90%;
     --input: 220 15% 95%;
     --ring: 210 85% 58%;
 
-    /* Gamification colors */
-    --xp: 35 95% 60%;
-    --hearts: 0 75% 60%;
-    --streak: 35 95% 60%;
-    --progress: 210 85% 58%;
+    /* Gamification colors - Bright and engaging */
+    --xp: 45 100% 51%;
+    --hearts: 350 85% 60%;
+    --streak: 25 95% 53%;
+    --progress: 140 85% 45%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 85% 58%), hsl(210 85% 45%));
-    --gradient-success: linear-gradient(135deg, hsl(142 70% 50%), hsl(142 70% 40%));
-    --gradient-accent: linear-gradient(135deg, hsl(35 95% 60%), hsl(35 95% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(210 85% 58%) 0%, hsl(142 70% 50%) 50%, hsl(35 95% 60%) 100%);
+    /* Gradients - Vibrant and playful */
+    --gradient-primary: linear-gradient(135deg, hsl(140 85% 45%), hsl(140 85% 35%));
+    --gradient-success: linear-gradient(135deg, hsl(140 85% 45%), hsl(140 85% 35%));
+    --gradient-secondary: linear-gradient(135deg, hsl(210 100% 56%), hsl(210 100% 46%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 43%));
+    --gradient-hero: linear-gradient(135deg, hsl(140 85% 45%) 0%, hsl(210 100% 56%) 50%, hsl(25 95% 53%) 100%);
 
     /* Shadows */
     --shadow-soft: 0 2px 8px hsl(220 15% 15% / 0.08);
@@ -148,7 +149,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-nunito;
   }
 }
 
@@ -197,6 +198,44 @@
     }
   }
 
+  /* Playful bounce animation */
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Interactive hover effects */
+  .hover-lift {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-strong);
+  }
+
+  .hover-grow {
+    transition: transform 0.2s ease-out;
+  }
+
+  .hover-grow:hover {
+    transform: scale(1.05);
+  }
+
   /* Design System Utilities */
   .bg-gradient-hero {
     background: var(--gradient-hero);
@@ -208,6 +247,10 @@
 
   .bg-gradient-success {
     background: var(--gradient-success);
+  }
+
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
   }
 
   .bg-gradient-accent {
