@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageCard } from "@/components/LanguageCard";
+import { AddCourseModal } from "@/components/AddCourseModal";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Star, Users, BookOpen, Play, ArrowRight, LogIn, UserPlus } from "lucide-react";
+import { Globe, Star, Users, BookOpen, Play, ArrowRight, LogIn, UserPlus, Menu, X } from "lucide-react";
 import heroImage from "@/assets/hero-learning.jpg";
 import spanishImage from "@/assets/spanish-flag.jpg";
 import frenchImage from "@/assets/french-flag.jpg";
@@ -12,8 +13,8 @@ import Dashboard from "./Dashboard";
 
 const Index = () => {
   const [showDashboard, setShowDashboard] = useState(false);
-
-  const languages = [
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [languages, setLanguages] = useState([
     {
       language: "Spanish",
       nativeLanguage: "English",
@@ -30,7 +31,11 @@ const Index = () => {
       lessons: 165,
       image: frenchImage
     }
-  ];
+  ]);
+
+  const handleAddCourse = (newCourse: any) => {
+    setLanguages([...languages, newCourse]);
+  };
 
   if (showDashboard) {
     return <Dashboard />;
@@ -49,7 +54,8 @@ const Index = () => {
               <span className="text-xl font-bold text-foreground">LingoFlow</span>
             </div>
             
-            <div className="flex items-center gap-3">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-3">
               <Link to="/login">
                 <Button variant="ghost" size="sm">
                   <LogIn className="h-4 w-4 mr-2" />
@@ -63,7 +69,38 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 py-4 border-t bg-background/95 backdrop-blur-sm">
+              <div className="flex flex-col gap-2">
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="sm" className="w-full">
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -130,13 +167,18 @@ const Index = () => {
       <section className="py-20 bg-card">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Choose Your Language Adventure
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Start your journey with interactive lessons designed by language experts. 
-              Track progress and stay motivated with gamification.
-            </p>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                  Choose Your Language Adventure
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-2xl">
+                  Start your journey with interactive lessons designed by language experts. 
+                  Track progress and stay motivated with gamification.
+                </p>
+              </div>
+              <AddCourseModal onAddCourse={handleAddCourse} />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">

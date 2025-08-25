@@ -14,6 +14,7 @@ interface Task {
   options?: string[];
   correctAnswer: string;
   hint?: string;
+  audioUrl?: string; // Add audio URL for listen tasks
 }
 
 interface LessonPlayerProps {
@@ -30,6 +31,9 @@ export const LessonPlayer = ({ lessonTitle, tasks, onComplete, onExit }: LessonP
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [score, setScore] = useState(0);
   const [hearts, setHearts] = useState(5);
+  const [audioRef] = useState<HTMLAudioElement | null>(() => 
+    typeof window !== 'undefined' ? new Audio() : null
+  );
 
   const currentTask = tasks[currentTaskIndex];
   const progress = ((currentTaskIndex + 1) / tasks.length) * 100;
@@ -57,6 +61,24 @@ export const LessonPlayer = ({ lessonTitle, tasks, onComplete, onExit }: LessonP
         onComplete(score);
       }
     }, 2000);
+  };
+
+  const playAudio = () => {
+    if (currentTask.type === 'listen' && audioRef) {
+      // For demo, we'll use text-to-speech if no audioUrl is provided
+      if (currentTask.audioUrl) {
+        audioRef.src = currentTask.audioUrl;
+        audioRef.play().catch(console.error);
+      } else {
+        // Fallback to Web Speech API for demo
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(currentTask.correctAnswer);
+          utterance.lang = 'es-ES'; // Spanish for demo
+          utterance.rate = 0.8;
+          speechSynthesis.speak(utterance);
+        }
+      }
+    }
   };
 
   const isAnswered = currentTask.type === 'multiple-choice' ? selectedOption : userAnswer.trim();
@@ -128,7 +150,12 @@ export const LessonPlayer = ({ lessonTitle, tasks, onComplete, onExit }: LessonP
 
                 {currentTask.type === 'listen' && (
                   <div className="text-center space-y-4">
-                    <Button size="lg" variant="outline" className="h-20 w-20 rounded-full">
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      className="h-20 w-20 rounded-full hover:bg-primary/10 transition-colors"
+                      onClick={playAudio}
+                    >
                       <Volume2 className="h-8 w-8" />
                     </Button>
                     <Input
